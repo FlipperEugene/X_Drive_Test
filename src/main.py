@@ -1,43 +1,24 @@
-# ---------------------------------------------------------------------------- #
-#                                                                              #
-# 	Module:       main.py                                                      #
-# 	Author:       BenWatford                                                   #
-# 	Created:      3/13/2024, 9:55:11 AM                                        #
-# 	Description:  V5 project                                                   #
-#                                                                              #
-# ---------------------------------------------------------------------------- #
+"""
+This file goes on the vex brain over a USB cable, the rest of the code can be pushed to an SD card using deploy.py
+"""
 
-# Library imports
+
 from vex import *
-import Constants
-import xDrive
+from Robot import Robot
 
 
-class Robot:
-    def __init__(self):
-        self.con = None
-        self.brain = None
+brain = Brain()
 
-    def init(self):
-        self.brain = Brain()
-        self.brain.screen.clear_screen()
-        self.con = Constants.con
-        Constants.debugState = 1
-        comp = Competition(self.user_control, self.pre_autonomous)
-        self.pre_autonomous()
+if not brain.sdcard.is_inserted():
+    brain.screen.print("Please insert the SD card")
+    while not brain.sdcard.is_inserted():
+        wait(50, MSEC)
+    wait(1000, MSEC)  # Make sure that the SD card is well-situated
 
-    def pre_autonomous(self):
-        pass
-
-    def user_control(self):
-        print("Driver Control")
-        drive = xDrive.Drive()
+brain.screen.clear_screen()
+brain.screen.set_cursor(1, 1)
 
 
-        while True:
-            forward_speed = self.con.axis3.position()
-            strafe_speed = self.con.axis4.position()
-            turn_speed = self.con.axis1.position()
-
-            drive.set_drive_speeds(forward_speed, strafe_speed, turn_speed)
-            wait(10)
+if __name__ == "__main__":
+    while True:
+        robot = Robot(brain)
