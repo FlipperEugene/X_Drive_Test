@@ -1,25 +1,24 @@
-from vex import Motor, Ports, GearSetting, Controller, Inertial, PRIMARY, Brain
+from vex import Ports, GearSetting
 
-con = Controller(PRIMARY)
+
 """
     /--------\
-    | 1    2      |
-    |               |
+    | 1    2     |
+    |                |
     | 4    3     |
     \--------/ 
-
-
 """
+
 """Motor Init"""
-DriveTrainRatio = GearSetting.RATIO_18_1
-RedInsert = GearSetting.RATIO_36_1
-motor_1 = Motor(Ports.PORT1, DriveTrainRatio, False)
-motor_2 = Motor(Ports.PORT2, DriveTrainRatio, False)
-motor_3 = Motor(Ports.PORT3, DriveTrainRatio, False)
-motor_4 = Motor(Ports.PORT4, DriveTrainRatio, False)
-motor_5 = Motor(Ports.PORT5, RedInsert, False)
-inertial_21 = Inertial(Ports.PORT20)
-brain = Brain()
+drivetrain_gear_ratio = GearSetting.RATIO_18_1
+drivetrain_inverted = False
+
+front_left_motor_port = Ports.PORT11
+front_right_motor_port = Ports.PORT12
+back_left_motor_port = Ports.PORT14
+back_right_motor_port = Ports.PORT13
+
+inertial_port = Ports.PORT20
 
 """Class States"""
 
@@ -34,16 +33,6 @@ class PrintState:
     NotPrinted = 1
 
 
-"""Print Function, Requesting "Text" which replaces the
-existing brain.screen.print(""). If text was already called
-then the function clears the screen."""
-
-
-def print(Text):
-    if PrintState == 2:
-        brain.screen.print(Text)
-        brain.screen.new_line()
-        PrintState == PrintState.Printed
-    elif PrintState == 1:
-        brain.screen.clear_screen
-        PrintState.NotPrinted
+class Field_Centric_State:
+    Centric = 0
+    NotCentric = 1

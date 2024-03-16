@@ -20,5 +20,4 @@ brain.screen.set_cursor(1, 1)
 
 
 if __name__ == "__main__":
-    while True:
-        robot = Robot(brain)
+    robot = Robot(brain)
